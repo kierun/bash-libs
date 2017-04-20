@@ -1,11 +1,27 @@
 #!/bin/bash
+################################################################################
 #
 # Question: What does this do?
-# Answer: It backups database daily, and keep only so many.
+# Answer: It is a skeleton for an over engineered bash script. ☺
 #
-# Question: What are the options?
-# Answer: The first option is the database name, the second is where to scp
-#         the backup file.
+# Question: What does it look like?
+# Answer:  run it `./skeleton.bash -v 7` and see…
+#
+################################################################################
+# Copyright (C) 2017 Yann Golanski.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
 # Exit on error.
@@ -18,9 +34,9 @@ set -o errtrace
 set -o nounset
 #  Trap non-normal exit signals: 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
 #  NOTE1: - 9/KILL cannot be trapped.
-#+        - 0/EXIT isn't trapped because:
-#+          - with ERR trap defined, trap would be called twice on error
-#+          - with ERR trap defined, syntax errors exit with status 0, not 2
+#         - 0/EXIT isn't trapped because:
+#           - with ERR trap defined, trap would be called twice on error
+#           - with ERR trap defined, syntax errors exit with status 0, not 2
 #  NOTE2: Setting ERR trap does implicit `set -o errexit' or `set -e'.
 trap onexit 1 2 3 15 ERR
 #--- onexit() -----------------------------------------------------
