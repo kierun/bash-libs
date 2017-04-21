@@ -100,13 +100,12 @@ __LOG_EMERG_EXIT=0
 
 
 # give the caller half a chance without having to read the code
-function __lib_help( ) {
+function __logging_lib_help( ) {
 
     cat <<- EOF
 Calling: . skeleton.bash
 
 Command-line args:
- -H              Print this help.
  -S              Strict mode - invokes some strict bash opts
  -T              Call date for more accurate timestamps in log lines
  -N              Switch off colour output to tty
@@ -198,7 +197,6 @@ function .debug() {
 
 ## Command line options.
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
-__lib_do_help=0
 
 __prev_opterr=$OPTERR
 OPTERR=0
@@ -221,8 +219,6 @@ while getopts "HSVDTMNXE" opt; do
             ;;
         E)  __LOG_EMERG_EXIT=1
             ;;
-        H)  __lib_do_help=1
-            ;;
         # do nothing to other people's args
         *)  ;;
     esac
@@ -242,8 +238,12 @@ if [ $__LOG_TS_CALLOUT -eq 0 ]; then
     SECONDS=$(date +%s)
 fi
 
-if [ $__lib_do_help -gt 0 ]; then
-    __lib_help
+# are we being included?
+this=$(realpath $BASH_SOURCE)
+orig=$(realpath $0)
+
+if [ $this == $orig ]; then
+    __logging_lib_help
 fi
 
 #################################################################################

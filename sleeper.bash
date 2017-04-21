@@ -8,6 +8,21 @@ __SLPLOOP=1
 __SLPBEFORE=0
 __SLPSTARTED=0
 
+
+function __sleeper_lib_help( ) {
+    cat <<- EOF
+Calling: . <path>/sleeper.bash
+
+There are no command-line options for the sleeper library - call
+the sleeper control functions explicitly.
+
+More docs due here.
+EOF
+
+    exit 0
+}
+
+
 # detect systems which don't have usleep
 us=$(which usleep)
 if [ -z "$us" ]; then
@@ -116,3 +131,9 @@ function sleeper_loop( ) {
     fi
 }
 
+this=$(realpath $BASH_SOURCE)
+orig=$(realpath $0)
+
+if [ $this == $orig ]; then
+    __sleeper_lib_help
+fi
