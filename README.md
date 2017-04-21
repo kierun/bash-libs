@@ -1,7 +1,11 @@
-# bash-skeleton-script
+# bash-libs
 
-This is an over-engineered bash script template with 256 colour logging…
+A collections of really useful[⸮](https://en.wikipedia.org/wiki/Irony_mark) bash scripts that you can source into your own script to make your script more niffty.
 
-To use it, just clone this repo and copy `skelelton.bash` to whatever you wish to call your script.
+## What is in there?
+
++ **logging.bash** This is an over-engineered bash script template with 256 colour logging…
+
+## Notes.
 
 *Criticism, bug reports, and improvements are most welcome! ☺*
