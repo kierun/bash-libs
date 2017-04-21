@@ -2,10 +2,11 @@
 ################################################################################
 #
 # Question: What does this do?
-# Answer: It is a skeleton for an over engineered bash script. ☺
+# Answer: It is a logging library for bash scripts
 #
 # Question: What does it look like?
-# Answer:  run it `./skeleton.bash -v 7` and see…
+# Answer: Have ". <path>/logging.bash" in your code where <path> is wherever you
+# put this.
 #
 ################################################################################
 # Copyright (C) 2017 Yann Golanski.
