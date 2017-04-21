@@ -24,6 +24,17 @@ skip_today=("Sat" "Sun")
 ################################################################################
 ## ⚠  Ignore things below this line…
 
+function __wallpaper_lib_help( ) {
+    cat <<- EOF
+Calling: . <path>/wallpaper.bash
+
+This file needs a bit of work to make it an includable lib, rather than a
+standalone process.
+
+EOF
+    exit 0
+}
+
 # Function that returns 0 if and element is in the array.
 function containsElement () {
   local e
@@ -102,3 +113,10 @@ while true; do
     done
 done
 # eof
+
+this=$(realpath $BASH_SOURCE)
+orig=$(realpath $0)
+
+if [ $this == $orig ]; then
+    __wallpaper_lib_help
+fi
