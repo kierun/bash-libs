@@ -13,13 +13,13 @@ frequency="10m"
 setter="`which feh` --bg-scale"
 
 # When do you want the rotating to pause. Set this above 2400 for always.
-pause_time="2500"
+pause_time="1600"
 
 # How long do we wish this to pause for?
-pause_duration="12 hours 40 minutes"
+pause_duration="15 hours"
 
 # What are the days you do not wish to work on. An empty array is all the time.
-skip_today=()
+skip_today=("Sat" "Sun")
 
 ################################################################################
 ## ⚠  Ignore things below this line…
@@ -29,6 +29,16 @@ function containsElement () {
   local e
   for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
   return 1
+}
+function runToday() {
+    local d
+    d=$(date +%a)
+    for s in ${skip_today[@]}; do
+        if [ $s == $d ]; then
+            return 0
+        fi
+    done
+    return 1
 }
 
 # Do the hard work…
@@ -59,15 +69,11 @@ while true; do
     array+=($(/usr/bin/find "${dirs[@]}" -type f | shuf))
 
     # Loop through the array, set as back drop, and sleep till next time.
+    COUNTER=0
     for img in "${array[@]}"; do
-        if containsElement `date +'%a'` "${skip_today[@]}"; then
-            # Do not run this day.
-            echo "This is the weekend"
-            current_epoch=$(date +%s)
-            target_epoch=$(date -d "tomorrow" +%s)
-            sleep_seconds=$(( $target_epoch - $current_epoch ))
-            sleep $sleep_seconds
-        else
+        runToday
+        if [ $? -gt 0 ]; then
+        #if containsElement `date +'%a'` "${skip_today[@]}"; then
             # We can run, but when?
             now=`date +'%H%M'`
             if [ $now -ge $pause_time ];
@@ -80,10 +86,18 @@ while true; do
                 sleep $sleep_seconds
             else
                 # We can set the wallpaper.
-                echo $img
+                let COUNTER=COUNTER+1
+                echo "`date` ${COUNTER}/${#array[@]}: $img"
                 $setter $img
                 sleep $frequency
             fi
+        else
+            # Do not run this day.
+            echo "This is the weekend"
+            current_epoch=$(date +%s)
+            target_epoch=$(date -d "tomorrow" +%s)
+            sleep_seconds=$(( $target_epoch - $current_epoch ))
+            sleep $sleep_seconds
         fi
     done
 done
