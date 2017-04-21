@@ -24,21 +24,33 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
-# Exit on error.
-# Trap exit.
-# This script is supposed to run in a subshell.
-# See also: http://fvue.nl/wiki/Bash:_Error_handling
-# Let shell functions inherit ERR trap.  Same as `set -E'.
-set -o errtrace 
-# Trigger error when expanding unset variables.  Same as `set -u'.
-set -o nounset
-#  Trap non-normal exit signals: 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
-#  NOTE1: - 9/KILL cannot be trapped.
-#         - 0/EXIT isn't trapped because:
-#           - with ERR trap defined, trap would be called twice on error
-#           - with ERR trap defined, syntax errors exit with status 0, not 2
-#  NOTE2: Setting ERR trap does implicit `set -o errexit' or `set -e'.
-trap onexit 1 2 3 15 ERR
+
+function __set_strict( ) {
+    # Exit on error.
+    # Trap exit.
+    # This script is supposed to run in a subshell.
+    # See also: http://fvue.nl/wiki/Bash:_Error_handling
+
+    # Let shell functions inherit ERR trap.  Same as `set -E'.
+    set -o errtrace 
+    # Trigger error when expanding unset variables.  Same as `set -u'.
+    set -o nounset
+
+    # and don't let pipes conceal errors
+    set -o pipefail
+}
+
+
+function __trap_exit( ) {
+    #  Trap non-normal exit signals: 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
+    #  NOTE1: - 9/KILL cannot be trapped.
+    #         - 0/EXIT isn't trapped because:
+    #           - with ERR trap defined, trap would be called twice on error
+    #           - with ERR trap defined, syntax errors exit with status 0, not 2
+    #  NOTE2: Setting ERR trap does implicit `set -o errexit' or `set -e'.
+    trap onexit 1 2 3 15 ERR
+}
+
 #--- onexit() -----------------------------------------------------
 #  @param $1 integer  (optional) Exit status.  If not set, use `$?'
 function onexit() {
@@ -48,81 +60,187 @@ function onexit() {
 }
 
 # Logging with niffty 256 colours support on tty.
-__VERBOSE=0
-declare -A LOG_LEVELS
-LOG_LEVELS=([0]="emergency"
-            [1]="alert"
-            [2]="critical"
-            [3]="err"
-            [4]="warning"
-            [5]="notice"
-            [6]="info"
-            [7]="debug")
-reset=`tput sgr0`
-LOG_COLOURS=([0]=`tput setaf 196`
-             [1]=`tput setaf 161`
-             [2]=`tput setaf 201`
-             [3]=`tput setaf 126`
-             [4]=`tput setaf 214`
-             [5]=`tput setaf 87`
-             [6]=`tput setaf 252` 
-             [7]=`tput setaf 242`)
 
-function .log () {
-  local LEVEL=${1}
-  shift
-  if [ -t 1 ]
-  then 
-    # Terminal.
-    if [ ${__VERBOSE} -ge ${LEVEL} ]; then
-      echo "${LOG_COLOURS[$LEVEL]}[${LOG_LEVELS[$LEVEL]}] $@ ${reset}"
-    fi
-  else
-    # Not a terminal.
-    if [ ${__VERBOSE} -ge ${LEVEL} ]; then
-      echo "[${LOG_LEVELS[$LEVEL]}]" "$@"
-    fi
-  fi
+declare -A __LOG_LEVELS
+declare -A __LOG_CLR_STRINGS
+declare -A __LOG_CLR_VALUES
+
+
+# notice and below
+__LOG_LEVEL_MAX=5
+
+__LOG_LEVELS=([0]="emergency"
+              [1]="alert"
+              [2]="critical"
+              [3]="err"
+              [4]="warning"
+              [5]="notice"
+              [6]="info"
+              [7]="debug")
+
+__LOG_CLR_VALUES=([0]=196
+                  [1]=161
+                  [2]=201
+                  [3]=126
+                  [4]=214
+                  [5]=87
+                  [6]=47 # was 252
+                  [7]=242)
+
+# create our strings
+for i in $(seq 0 7); do
+    __LOG_CLR_STRINGS[$i]=$(tput setaf ${__LOG_CLR_VALUES[$i]})
+done
+__LOG_CLR_RESET=$(tput sgr0)
+
+__LOG_CLR_USE=1
+__LOG_TS_CALLOUT=0
+__LOG_EMERG_EXIT=0
+
+
+# give the caller half a chance without having to read the code
+function __lib_help( ) {
+
+    cat <<- EOF
+Calling: . skeleton.bash
+
+Command-line args:
+ -H              Print this help.
+ -S              Strict mode - invokes some strict bash opts
+ -T              Call date for more accurate timestamps in log lines
+ -N              Switch off colour output to tty
+ -Q              Quiet - warns and below only
+ -V              Verbose - include info
+ -D              Debug - include debug, set $DEBUG
+ -X              Trap exit status and report it
+ -E              Calls to emergency exit the process
+
+This skeleton adds some logging and the command-line switches to control
+it.  It adds error trapping if desired (call onexit explicitly at the end
+of your script if you want the message).
+
+Below are some example log messages.  Try the timestamp and verbosity
+options with with.
+
+EOF
+
+    ## Do your things!
+    .emerg  "Panic."
+    .alert  "A snake."
+    .crit   "Oooh, it's a snake."
+    .err    "It's a..."
+    .warn   "Badgers"
+    .notice "Badgers"
+    .info   "Badgers"
+    .debug  "Mushroom-mushroom!"
 }
+
+
+# defaults to notice
+function .log( ) {
+
+    local level=${1:-5}
+    shift
+
+    if [ $__LOG_LEVEL_MAX -lt $level ]; then
+        return 0
+    fi
+
+    local ts=$SECONDS
+    local lstr=${__LOG_LEVELS[$level]}
+
+    # complex timestamps?
+    if [ $__LOG_TS_CALLOUT -gt 0 ]; then
+        local tstr=$(date '+%F %T.%N')
+        ts=${tstr:0:23}
+    fi
+
+    # just switch on the variable for now
+    if [ $__LOG_CLR_USE -gt 0 ]; then
+        echo "[$ts] [${__LOG_CLR_STRINGS[$level]}${lstr}${__LOG_CLR_RESET}] $@"
+    else
+        echo "[$ts] [$lstr] $@"
+    fi
+}
+
+function .emerg() {
+    .log 0 "$@"
+    if [ $__LOG_EMERG_EXIT -gt 0 ]; then
+        exit 1
+    fi
+}
+function .alert() {
+    .log 1 "$@"
+}
+function .crit() {
+    .log 2 "$@"
+}
+function .err() {
+    .log 3 "$@"
+}
+function .warn() {
+    .log 4 "$@"
+}
+function .notice() {
+    .log 5 "$@"
+}
+function .info() {
+    .log 6 "$@"
+}
+function .debug() {
+    .log 7 "$@"
+}
+
 
 #################################################################################
 # MY SCRIPT FOLLOWS
 
 ## Command line options.
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
-while getopts "hv:" opt; do
-    case "$opt" in
-    h)
-        echo "Backup a remote database locally."
-        echo ""
-        echo "Supported options are:"
-        echo "  h       This help."
-        echo "  v NBR   Verbosity from 0 (emergency) to 7 (debug)."
-        echo ""
-        exit 0
-        ;;
-    v) __VERBOSE=$OPTARG
-        ;;
-    *) echo "Command is not supported."
-       exit 1
-        ;;
+__lib_do_help=0
+
+while getopts "HSVDTMNXE" opt; do
+    case $opt in
+        S)  __set_strict
+            ;;
+        V)  __LOG_LEVEL_MAX=6
+            ;;
+        D)  __LOG_LEVEL_MAX=7
+            DEBUG=1
+            ;;
+        Q)  __LOG_LEVEL_MAX=4
+            ;;
+        T)  __LOG_TS_CALLOUT=1
+            ;;
+        N)  __LOG_CLR_USE=0
+            ;;
+        X)  __trap_exit
+            ;;
+        E)  __LOG_EMERG_EXIT=1
+            ;;
+        H)  __lib_do_help=1
+            ;;
+        # do nothing to other people's args
+        *)  ;;
     esac
 done
-shift $((OPTIND-1))
 
+# fix optind to 
+OPTIND=1
 
-## Do your things!
+# detect a non-tty
+if [ ! -t 1 ]; then
+    __LOG_CLR_USE=0
+fi
 
-.log 0 "This is a ${LOG_LEVELS[0]} message."
-.log 1 "This is a ${LOG_LEVELS[1]} message."
-.log 2 "This is a ${LOG_LEVELS[2]} message."
-.log 3 "This is a ${LOG_LEVELS[3]} message."
-.log 4 "This is a ${LOG_LEVELS[4]} message."
-.log 5 "This is a ${LOG_LEVELS[5]} message."
-.log 6 "This is a ${LOG_LEVELS[6]} message."
-.log 7 "This is a ${LOG_LEVELS[7]} message."
- 
+# capture bash seconds if we need to
+if [ $__LOG_TS_CALLOUT -eq 0 ]; then
+    SECONDS=$(date +%s)
+fi
+
+if [ $__lib_do_help -gt 0 ]; then
+    __lib_help
+fi
+
 #################################################################################
-# Always call `onexit' at end of script
-onexit
 # EOF
