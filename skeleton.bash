@@ -199,6 +199,8 @@ function .debug() {
 OPTIND=1 # Reset in case getopts has been used previously in the shell.
 __lib_do_help=0
 
+__prev_opterr=$OPTERR
+OPTERR=0
 while getopts "HSVDTMNXE" opt; do
     case $opt in
         S)  __set_strict
@@ -225,8 +227,9 @@ while getopts "HSVDTMNXE" opt; do
     esac
 done
 
-# fix optind to 
+# fix optind and opterr
 OPTIND=1
+OPTERR=$__prev_opterr
 
 # detect a non-tty
 if [ ! -t 1 ]; then
