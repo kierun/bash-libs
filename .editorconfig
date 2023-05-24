@@ -1,0 +1,9 @@
+# EditorConfig: https://EditorConfig.org
+
+[*.sh]
+indent_style = space
+indent_size = 4
+
+[*.bash]
+indent_style = space
+indent_size = 4

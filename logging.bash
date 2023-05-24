@@ -75,7 +75,7 @@ __LOG_LEVELS=([0]="emergency"
     [4]="warning"
     [5]="notice"
     [6]="info"
-[7]="debug")
+    [7]="debug")
 
 __LOG_CLR_VALUES=([0]=196
     [1]=161
@@ -84,7 +84,7 @@ __LOG_CLR_VALUES=([0]=196
     [4]=214
     [5]=87
     [6]=47 # was 252
-[7]=242)
+    [7]=242)
 
 # create our strings
 for i in $(seq 0 7); do
@@ -198,33 +198,33 @@ __prev_opterr=$OPTERR
 OPTERR=0
 while getopts "HSVDTMNXEQ" opt; do
     case $opt in
-        S)
-            __set_strict
-            ;;
-        V)
-            __LOG_LEVEL_MAX=6
-            ;;
-        D)
-            __LOG_LEVEL_MAX=7
-            DEBUG=1
-            ;;
-        Q)
-            __LOG_LEVEL_MAX=4
-            ;;
-        T)
-            __LOG_TS_CALLOUT=1
-            ;;
-        N)
-            __LOG_CLR_USE=0
-            ;;
-        X)
-            __trap_exit
-            ;;
-        E)
-            __LOG_EMERG_EXIT=1
-            ;;
-            # do nothing to other people's args
-        *) ;;
+    S)
+        __set_strict
+        ;;
+    V)
+        __LOG_LEVEL_MAX=6
+        ;;
+    D)
+        __LOG_LEVEL_MAX=7
+        DEBUG=1
+        ;;
+    Q)
+        __LOG_LEVEL_MAX=4
+        ;;
+    T)
+        __LOG_TS_CALLOUT=1
+        ;;
+    N)
+        __LOG_CLR_USE=0
+        ;;
+    X)
+        __trap_exit
+        ;;
+    E)
+        __LOG_EMERG_EXIT=1
+        ;;
+        # do nothing to other people's args
+    *) ;;
     esac
 done
 
