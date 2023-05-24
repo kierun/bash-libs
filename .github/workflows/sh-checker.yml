@@ -1,8 +1,7 @@
 ---
 name: "Shell script checker"
 on:
-  # - pull_request
-  - push
+  - pull_request
 jobs:
   sh-checker:
     runs-on: ubuntu-latest
