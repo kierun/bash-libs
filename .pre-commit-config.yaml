@@ -1,0 +1,45 @@
+#     _________________________________________________
+# ___/ Usefull stuff you do WANT for all repositories. \________________________
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-json
+      - id: check-toml
+  #     ______
+  # ___/ BASH \__________________________________________________________________
+  - repo: https://github.com/lovesegfault/beautysh
+    rev: v6.2.1
+    hooks:
+      - id: beautysh
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: shellcheck
+  #     _______________
+  # ___/ Markdown lint \_________________________________________________________
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.34.0
+    hooks:
+      - id: markdownlint
+        args: [--ignore, CHANGELOG.md, -s, .mdl_style.rb]
+  #     ___________________________
+  # ___/ Semantic commit messages. \_____________________________________________
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+      - id: gitlint
+  #     _______________
+  # ___/ GH linting    \_________________________________________________________
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.23.0
+    hooks:
+      - id: check-github-actions
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.23.0
+    hooks:
+      - id: check-dependabot

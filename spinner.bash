@@ -20,54 +20,54 @@ function spinner() {
     local pid=$1 # Process Id of the previous running command
 
     case $((RANDOM % 12)) in
-    0)
-        local spin='⠁⠂⠄⡀⢀⠠⠐⠈'
-        local charwidth=3
-        ;;
-    1)
-        local spin='-\|/'
-        local charwidth=1
-        ;;
-    2)
-        local spin="▁▂▃▄▅▆▇█▇▆▅▄▃▂▁"
-        local charwidth=1
-        ;;
-    3)
-        local spin="▉▊▋▌▍▎▏▎▍▌▋▊▉"
-        local charwidth=1
-        ;;
-    4)
-        local spin='←↖↑↗→↘↓↙'
-        local charwidth=1
-        ;;
-    5)
-        local spin='▖▘▝▗'
-        local charwidth=1
-        ;;
-    6)
-        local spin='┤┘┴└├┌┬┐'
-        local charwidth=1
-        ;;
-    7)
-        local spin='◢◣◤◥'
-        local charwidth=1
-        ;;
-    8)
-        local spin='◰◳◲◱'
-        local charwidth=1
-        ;;
-    9)
-        local spin='◴◷◶◵'
-        local charwidth=1
-        ;;
-    10)
-        local spin='◐◓◑◒'
-        local charwidth=1
-        ;;
-    11)
-        local spin='⣾⣽⣻⢿⡿⣟⣯⣷'
-        local charwidth=1
-        ;;
+        0)
+            local spin='⠁⠂⠄⡀⢀⠠⠐⠈'
+            local charwidth=3
+            ;;
+        1)
+            local spin='-\|/'
+            local charwidth=1
+            ;;
+        2)
+            local spin="▁▂▃▄▅▆▇█▇▆▅▄▃▂▁"
+            local charwidth=1
+            ;;
+        3)
+            local spin="▉▊▋▌▍▎▏▎▍▌▋▊▉"
+            local charwidth=1
+            ;;
+        4)
+            local spin='←↖↑↗→↘↓↙'
+            local charwidth=1
+            ;;
+        5)
+            local spin='▖▘▝▗'
+            local charwidth=1
+            ;;
+        6)
+            local spin='┤┘┴└├┌┬┐'
+            local charwidth=1
+            ;;
+        7)
+            local spin='◢◣◤◥'
+            local charwidth=1
+            ;;
+        8)
+            local spin='◰◳◲◱'
+            local charwidth=1
+            ;;
+        9)
+            local spin='◴◷◶◵'
+            local charwidth=1
+            ;;
+        10)
+            local spin='◐◓◑◒'
+            local charwidth=1
+            ;;
+        11)
+            local spin='⣾⣽⣻⢿⡿⣟⣯⣷'
+            local charwidth=1
+            ;;
     esac
 
     local i=0
