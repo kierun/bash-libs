@@ -35,27 +35,27 @@ The rest should be put in directories with a capital letter. Something like
 
 Converts `mp4` into `gif`.
 
-## `convert_webp_png.bash'
+## `convert_webp_png.bash`
 
 Convert `webp` into `png`.
 
-## `nifty-colours.bash'
+## `nifty-colours.bash`
 
 Some nifty colours and a nice banner.
 
-## `spinner.bash'
+## `spinner.bash`
 
 A spinner for long tasks so something is still being shown no screen.
 
-## `switch-browser.bash'
+## `switch-browser.bash`
 
 Switch default browser from Chrome to Firefox and back.
 
-## `switch-sound.bash'
+## `switch-sound.bash`
 
 Switch from speakers to headphones and back.
 
-## `upgrade.sh'
+## `upgrade.sh`
 
 Does upgrade operations on Ubuntu and Fedora. Includes flatpak and pipx for
 added horror.
