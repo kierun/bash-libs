@@ -27,36 +27,36 @@
 #################################################################################
 
 function __set_strict() {
-	# Exit on error.
-	# Trap exit.
-	# This script is supposed to run in a subshell.
-	# See also: http://fvue.nl/wiki/Bash:_Error_handling
+    # Exit on error.
+    # Trap exit.
+    # This script is supposed to run in a subshell.
+    # See also: http://fvue.nl/wiki/Bash:_Error_handling
 
-	# Let shell functions inherit ERR trap.  Same as `set -E'.
-	set -o errtrace
-	# Trigger error when expanding unset variables.  Same as `set -u'.
-	set -o nounset
+    # Let shell functions inherit ERR trap.  Same as `set -E'.
+    set -o errtrace
+    # Trigger error when expanding unset variables.  Same as `set -u'.
+    set -o nounset
 
-	# and don't let pipes conceal errors
-	set -o pipefail
+    # and don't let pipes conceal errors
+    set -o pipefail
 }
 
 function __trap_exit() {
-	#  Trap non-normal exit signals: 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
-	#  NOTE1: - 9/KILL cannot be trapped.
-	#         - 0/EXIT isn't trapped because:
-	#           - with ERR trap defined, trap would be called twice on error
-	#           - with ERR trap defined, syntax errors exit with status 0, not 2
-	#  NOTE2: Setting ERR trap does implicit `set -o errexit' or `set -e'.
-	trap onexit 1 2 3 15 ERR
+    #  Trap non-normal exit signals: 1/HUP, 2/INT, 3/QUIT, 15/TERM, ERR
+    #  NOTE1: - 9/KILL cannot be trapped.
+    #         - 0/EXIT isn't trapped because:
+    #           - with ERR trap defined, trap would be called twice on error
+    #           - with ERR trap defined, syntax errors exit with status 0, not 2
+    #  NOTE2: Setting ERR trap does implicit `set -o errexit' or `set -e'.
+    trap onexit 1 2 3 15 ERR
 }
 
 #--- onexit() -----------------------------------------------------
 #  @param $1 integer  (optional) Exit status.  If not set, use `$?'
 function onexit() {
-	local exit_status=${1:-$?}
-	.log 6 Exiting "$0" with "$exit_status"
-	exit "$exit_status"
+    local exit_status=${1:-$?}
+    .log 6 Exiting "$0" with "$exit_status"
+    exit "$exit_status"
 }
 
 # Logging with niffty 256 colours support on tty.
@@ -69,26 +69,26 @@ declare -A __LOG_CLR_VALUES
 __LOG_LEVEL_MAX=5
 
 __LOG_LEVELS=([0]="emergency"
-	[1]="alert"
-	[2]="critical"
-	[3]="err"
-	[4]="warning"
-	[5]="notice"
-	[6]="info"
-	[7]="debug")
+    [1]="alert"
+    [2]="critical"
+    [3]="err"
+    [4]="warning"
+    [5]="notice"
+    [6]="info"
+    [7]="debug")
 
 __LOG_CLR_VALUES=([0]=196
-	[1]=161
-	[2]=201
-	[3]=126
-	[4]=214
-	[5]=87
-	[6]=47 # was 252
-	[7]=242)
+    [1]=161
+    [2]=201
+    [3]=126
+    [4]=214
+    [5]=87
+    [6]=47 # was 252
+    [7]=242)
 
 # create our strings
 for i in $(seq 0 7); do
-	__LOG_CLR_STRINGS[$i]=$(tput setaf "${__LOG_CLR_VALUES[$i]}")
+    __LOG_CLR_STRINGS[$i]=$(tput setaf "${__LOG_CLR_VALUES[$i]}")
 done
 __LOG_CLR_RESET=$(tput sgr0)
 
@@ -99,7 +99,7 @@ __LOG_EMERG_EXIT=0
 # give the caller half a chance without having to read the code
 function __logging_lib_help() {
 
-	cat <<-EOF
+    cat <<-EOF
 		Calling: . skeleton.bash
 
 		Command-line args:
@@ -121,71 +121,71 @@ function __logging_lib_help() {
 
 	EOF
 
-	## Do your things!
-	.emerg "Panic."
-	.alert "A snake."
-	.crit "Oooh, it's a snake."
-	.err "It's a..."
-	.warn "Badgers"
-	.notice "Badgers"
-	.info "Badgers"
-	.debug "Mushroom-mushroom!"
+    ## Do your things!
+    .emerg "Panic."
+    .alert "A snake."
+    .crit "Oooh, it's a snake."
+    .err "It's a..."
+    .warn "Badgers"
+    .notice "Badgers"
+    .info "Badgers"
+    .debug "Mushroom-mushroom!"
 }
 
 # defaults to notice
 function .log() {
 
-	local level=${1:-5}
-	shift
+    local level=${1:-5}
+    shift
 
-	if [ $__LOG_LEVEL_MAX -lt "$level" ]; then
-		return 0
-	fi
+    if [ $__LOG_LEVEL_MAX -lt "$level" ]; then
+        return 0
+    fi
 
-	local ts=$SECONDS
-	local lstr=${__LOG_LEVELS[$level]}
+    local ts=$SECONDS
+    local lstr=${__LOG_LEVELS[$level]}
 
-	# complex timestamps?
-	if [ $__LOG_TS_CALLOUT -gt 0 ]; then
-		local tstr
-		tstr=$(date '+%F %T.%N')
-		ts=${tstr:0:23}
-	fi
+    # complex timestamps?
+    if [ $__LOG_TS_CALLOUT -gt 0 ]; then
+        local tstr
+        tstr=$(date '+%F %T.%N')
+        ts=${tstr:0:23}
+    fi
 
-	# just switch on the variable for now
-	if [ $__LOG_CLR_USE -gt 0 ]; then
-		echo "[$ts] [${__LOG_CLR_STRINGS[$level]}${lstr}${__LOG_CLR_RESET}]" "$@"
-	else
-		echo "[$ts] [$lstr]" "$@"
-	fi
+    # just switch on the variable for now
+    if [ $__LOG_CLR_USE -gt 0 ]; then
+        echo "[$ts] [${__LOG_CLR_STRINGS[$level]}${lstr}${__LOG_CLR_RESET}]" "$@"
+    else
+        echo "[$ts] [$lstr]" "$@"
+    fi
 }
 
 function .emerg() {
-	.log 0 "$@"
-	if [ $__LOG_EMERG_EXIT -gt 0 ]; then
-		exit 1
-	fi
+    .log 0 "$@"
+    if [ $__LOG_EMERG_EXIT -gt 0 ]; then
+        exit 1
+    fi
 }
 function .alert() {
-	.log 1 "$@"
+    .log 1 "$@"
 }
 function .crit() {
-	.log 2 "$@"
+    .log 2 "$@"
 }
 function .err() {
-	.log 3 "$@"
+    .log 3 "$@"
 }
 function .warn() {
-	.log 4 "$@"
+    .log 4 "$@"
 }
 function .notice() {
-	.log 5 "$@"
+    .log 5 "$@"
 }
 function .info() {
-	.log 6 "$@"
+    .log 6 "$@"
 }
 function .debug() {
-	.log 7 "$@"
+    .log 7 "$@"
 }
 
 #################################################################################
@@ -197,35 +197,35 @@ OPTIND=1 # Reset in case getopts has been used previously in the shell.
 __prev_opterr=$OPTERR
 OPTERR=0
 while getopts "HSVDTMNXEQ" opt; do
-	case $opt in
-	S)
-		__set_strict
-		;;
-	V)
-		__LOG_LEVEL_MAX=6
-		;;
-	D)
-		__LOG_LEVEL_MAX=7
-		DEBUG=1
-		;;
-	Q)
-		__LOG_LEVEL_MAX=4
-		;;
-	T)
-		__LOG_TS_CALLOUT=1
-		;;
-	N)
-		__LOG_CLR_USE=0
-		;;
-	X)
-		__trap_exit
-		;;
-	E)
-		__LOG_EMERG_EXIT=1
-		;;
-	# do nothing to other people's args
-	*) ;;
-	esac
+    case $opt in
+    S)
+        __set_strict
+        ;;
+    V)
+        __LOG_LEVEL_MAX=6
+        ;;
+    D)
+        __LOG_LEVEL_MAX=7
+        DEBUG=1
+        ;;
+    Q)
+        __LOG_LEVEL_MAX=4
+        ;;
+    T)
+        __LOG_TS_CALLOUT=1
+        ;;
+    N)
+        __LOG_CLR_USE=0
+        ;;
+    X)
+        __trap_exit
+        ;;
+    E)
+        __LOG_EMERG_EXIT=1
+        ;;
+    # do nothing to other people's args
+    *) ;;
+    esac
 done
 
 # fix optind and opterr
@@ -234,12 +234,12 @@ OPTERR=$__prev_opterr
 
 # detect a non-tty
 if [ ! -t 1 ]; then
-	__LOG_CLR_USE=0
+    __LOG_CLR_USE=0
 fi
 
 # capture bash seconds if we need to
 if [ $__LOG_TS_CALLOUT -eq 0 ]; then
-	SECONDS=$(date +%s)
+    SECONDS=$(date +%s)
 fi
 
 # are we being included?
@@ -247,5 +247,5 @@ this=$(realpath "${BASH_SOURCE[@]}")
 orig=$(realpath "$0")
 
 if [ "$this" == "$orig" ]; then
-	__logging_lib_help
+    __logging_lib_help
 fi

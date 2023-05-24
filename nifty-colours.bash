@@ -14,18 +14,18 @@ debug=$(tput setaf 240)   # grey.
 reset=$(tput sgr0)
 
 header() {
-	offset=$2
-	title="___/ $1 \\"
-	len=${#title}
-	cols=$(tput cols)
-	echo -en "${header}"
-	echo -en "    "
-	for ((i = 4; i < len - offset; i++)); do printf "_"; done
-	echo
-	echo -en "$title"
-	for ((i = len; i < cols; i++)); do printf "_"; done
-	echo
-	echo -en "${reset}"
+    offset=$2
+    title="___/ $1 \\"
+    len=${#title}
+    cols=$(tput cols)
+    echo -en "${header}"
+    echo -en "    "
+    for ((i = 4; i < len - offset; i++)); do printf "_"; done
+    echo
+    echo -en "$title"
+    for ((i = len; i < cols; i++)); do printf "_"; done
+    echo
+    echo -en "${reset}"
 }
 
 header "\uebc7  Nifty colours and header…" 6
