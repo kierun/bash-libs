@@ -13,5 +13,5 @@ mapfile -t files < <(/bin/ls -1f | grep 'bash$' | grep -Fv install.bash)
 mkdir -p "$TARGET"
 
 for f in "${files[@]}"; do
-    install -m755 -pv "$f" "$TARGET/$f"
+	install -m755 -pv "$f" "$TARGET/$f"
 done
