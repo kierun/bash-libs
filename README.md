@@ -5,6 +5,11 @@ scripts that you can source into your own script to make your script more nifty.
 
 **Criticism, bug reports, and improvements are most welcome! ☺**
 
+## Pre-commit
+
+Please install [pre-commit](https://pre-commit.com/#install) and run
+`pre-commit install`.
+
 ## What is in there?
 
 ### `logging.bash`
