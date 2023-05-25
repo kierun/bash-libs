@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET=${1:-$HOME/bin/lib}
+TARGET=${1:-$HOME/bin}
 
 # get our sources
 src=$(realpath "$0")
@@ -13,5 +13,5 @@ mapfile -t files < <(/bin/ls -1f | grep 'bash$' | grep -Fv install.bash)
 mkdir -p "$TARGET"
 
 for f in "${files[@]}"; do
-    install -m755 -pv "$f" "$TARGET/$f"
+    ln -si "$(pwd)"/"$f" "$TARGET/"
 done
