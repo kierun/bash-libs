@@ -8,7 +8,7 @@ dir=$(dirname "$src")
 cd "$dir" || exit 1
 
 # files=($(/bin/ls -1f | grep 'bash$' | grep -Fv install.bash))
-mapfile -t files < <(/bin/ls -1f | grep 'bash$' | grep -Fv install.bash)
+mapfile -t files < <(/bin/ls -1f | grep 'sh$' | grep -Fv install.bash)
 
 mkdir -p "$TARGET"
 

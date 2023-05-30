@@ -3,8 +3,8 @@
 #
 # Colours for echo commands.
 # For colour codes, see https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
-# error=$(tput setaf 9)     # bright red.
-# success=$(tput setaf 2)   # normal green.
+error=$(tput setaf 9)   # bright red.
+success=$(tput setaf 2) # normal green.
 # warning=$(tput setaf 214) # orange.
 info=$(tput setaf 99)   # purple.
 header=$(tput setaf 69) # light blue.
@@ -49,3 +49,13 @@ fi
 header "\ue73c Pipx" 6
 echo ""
 pipx upgrade-all
+
+# Root kits?
+header "💀 Rootkit" 0
+echo ""
+if sudo chkrootkit 2>&1 | grep -v grep | grep INFECTED; then
+    echo "${error}""💀💀💀💀💀💀💀💀💀💀 We have had a problem!""${reset}"
+    echo "${error}""Now is a good time to panic!""${reset}"
+else
+    echo "${success}""Chkrootkit has not found any rootkits. Good.""${reset}"
+fi
