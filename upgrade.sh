@@ -21,7 +21,7 @@ header() {
     for ((i = 4; i < len - offset; i++)); do printf "_"; done
     echo
     echo -en "$title"
-    for ((i = len; i < cols; i++)); do printf "_"; done
+    for ((i = len - offset + 1; i < cols; i++)); do printf "_"; done
     echo
     echo -en "${reset}"
 }
@@ -51,11 +51,11 @@ echo ""
 pipx upgrade-all
 
 # Root kits?
-header "💀 Rootkit" 0
+header "\u2620 Rootkit" 6
 echo ""
-if sudo chkrootkit 2>&1 | grep -v grep | grep INFECTED; then
-    echo "${error}""💀💀💀💀💀💀💀💀💀💀 We have had a problem!""${reset}"
-    echo "${error}""Now is a good time to panic!""${reset}"
+if sudo chkrootkit 2>&1 | tee ~/.chkrootkit.log | grep -v grep | grep INFECTED; then
+    echo "${error}""💀💀💀💀💀💀💀💀💀💀 We MIGHT have had a problem!""${reset}"
+    echo "${error}""Now is a good time to check ~/.chkrootkit.log!""${reset}"
 else
     echo "${success}""Chkrootkit has not found any rootkits. Good.""${reset}"
 fi
