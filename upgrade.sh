@@ -46,9 +46,17 @@ if test -e "/etc/debian_version"; then
 fi
 
 # This is for everything!
-header "\ue73c Pipx" 6
+
+# pipx for Python.
+header "\ue73c Pipx update" 6
 echo ""
 pipx upgrade-all
+
+# Cargo for Rust.
+header "\ue7a8 Cargo update" 6
+echo ""
+echo "You need to run: cargo install cargo-update"
+cargo install-update -a
 
 # Root kits?
 header "\u2620 Rootkit" 6
