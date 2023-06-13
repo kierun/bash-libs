@@ -4,7 +4,7 @@
 ## Configuration!
 
 # Where are your wallpapers kept?
-wallpapers=~/wallpapers
+wallpapers=~/Pictures/wallpapers
 
 # How often you want your wallpaper to change? Passed to sleep…
 frequency="10m"
