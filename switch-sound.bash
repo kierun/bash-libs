@@ -5,7 +5,7 @@ while getopts "hsp" opt; do
     h)
         echo "Usage: $0 [-c] [-f] [-h]"
         echo "-s for speakers"
-        echo "-h for headphones"
+        echo "-p for headphones"
         echo "-h for help"
         echo "   No option switches from one to the other."
         exit 0
@@ -30,7 +30,7 @@ while getopts "hsp" opt; do
             # We have speakers, therefore we want to swtich to headphone.
             echo "Swtichinmg from line out to headphones."
             pactl set-sink-port 0 analog-output-headphones
-            pactl set-sink-volume 0 50%
+            pactl set-sink-volume 0 30%
         fi
         ;;
     esac
