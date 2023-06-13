@@ -60,8 +60,9 @@ cargo install-update -a
 
 # Root kits?
 header "\u2620 Rootkit" 6
+sleep 3
 echo ""
-if sudo chkrootkit 2>&1 | tee ~/.chkrootkit.log | grep -v grep | grep INFECTED; then
+if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | grep -v grep | grep INFECTED; then
     echo "${error}""💀💀💀💀💀💀💀💀💀💀 We MIGHT have had a problem!""${reset}"
     echo "${error}""Now is a good time to check ~/.chkrootkit.log!""${reset}"
 else
