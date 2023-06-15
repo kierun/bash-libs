@@ -58,6 +58,15 @@ echo ""
 echo "You need to run: cargo install cargo-update"
 cargo install-update -a
 
+# ClamAV
+header "\ue214 ClamAV update" 6
+echo ""
+if ! sudo /usr/bin/freshclam; then
+    echo "${error}""💀 clamAV not updated.""${reset}"
+else
+    echo "${success}""clamAV updated.""${reset}"
+fi
+
 # Root kits?
 header "\u2620 Rootkit" 6
 sleep 3
