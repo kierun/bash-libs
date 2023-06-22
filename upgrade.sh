@@ -51,6 +51,7 @@ fi
 header "\ue73c Pipx update" 6
 echo ""
 pipx upgrade-all
+pipx list --short
 
 # Cargo for Rust.
 header "\ue7a8 Cargo update" 6
