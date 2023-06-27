@@ -51,7 +51,12 @@ fi
 header "\ue73c Pipx update" 6
 echo ""
 pipx upgrade-all
-pipx list --short
+if test -e /etc/fedora-release; then
+    pipx list --short
+elif test -e /etc/debian_version; then
+    # Old software sucks…
+    pipx list
+fi
 
 # Cargo for Rust.
 header "\ue7a8 Cargo update" 6
