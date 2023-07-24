@@ -73,6 +73,17 @@ else
     echo "${success}""clamAV updated.""${reset}"
 fi
 
+# Golang.
+header "\ue724 Golang update" 6
+echo ""
+if command -v go-global-update &> /dev/null; then
+    if go-global-update; then
+        echo "${success}""Golang things were updated.""${reset}"
+    fi
+else
+    echo "${error}""💀 go-global-update not found: go install github.com/Gelio/go-global-update@latest""${reset}"
+fi
+
 # Root kits?
 header "\u2620 Rootkit" 6
 sleep 3
