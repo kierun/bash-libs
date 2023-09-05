@@ -27,7 +27,7 @@ header() {
 }
 
 # This is only for Fedora.
-if test -e /etc/fedora-release; then
+if [[ $(lsb_release -is) == "Fedora" ]]; then
     header "\uf30a  Fedora" 6
 
     echo -e "\n""${info}""DNF update""${reset}"
@@ -38,8 +38,8 @@ if test -e /etc/fedora-release; then
 fi
 
 # This is only for Ubuntu.
-if test -e "/etc/debian_version"; then
-    header "\uebc9  Debian" 6
+if [[ $(lsb_release -is) == "Ubuntu" ]]; then
+    header "\uebc9  Ubuntu" 6
 
     echo -e "\n""${info}""APT update and upgrade""${reset}"
     sudo apt update && sudo apt upgrade
