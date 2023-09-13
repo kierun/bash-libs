@@ -34,7 +34,7 @@ if [[ $(lsb_release -is) == "Fedora" ]]; then
     sudo dnf up
 
     echo -e "\n""${info}""Fltapak""${reset}"
-    flatpak update
+    sudo flatpak update
 fi
 
 # This is only for Ubuntu.
