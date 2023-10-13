@@ -31,7 +31,7 @@ if [[ $(lsb_release -is) == "Fedora" ]]; then
     header "\uf30a  Fedora" 6
 
     echo -e "\n""${info}""DNF update""${reset}"
-    if [ command -v dnf5 ]; then
+    if command -v dnf5; then
         sudo dnf5 up
     else
         sudo dnf up
