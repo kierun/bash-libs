@@ -26,6 +26,12 @@ header() {
     echo -en "${reset}"
 }
 
+# Check that https://github.com/BurntSushi/ripgrep is installed.
+if ! [ -x "$(command -v rg)" ]; then
+  echo 'Error: RipGrep is not installed. Please install it.' >&2
+  exit 1
+fi
+
 # This is only for Fedora.
 if [[ $(lsb_release -is) == "Fedora" ]]; then
     header "\uf30a  Fedora" 6
@@ -92,7 +98,7 @@ fi
 header "\u2620 Rootkit" 6
 sleep 3
 echo ""
-if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | grep -v grep | grep INFECTED; then
+if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | rg -v rg | rg -i INFECTED; then
     echo "${error}""💀💀💀💀💀💀💀💀💀💀 We MIGHT have had a problem!""${reset}"
     echo "${error}""Now is a good time to check ~/.chkrootkit.log!""${reset}"
 else
