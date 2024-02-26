@@ -68,7 +68,11 @@ elif test -e /etc/debian_version; then
     pipx list
 fi
 
-# Cargo for Rust.
+# Rust then Cargo.
+header "\ue7a8 Rust update" 6
+if command -v rustup &> /dev/null; then
+    rustup update
+fi
 header "\ue7a8 Cargo update" 6
 echo ""
 echo "You need to run: cargo install cargo-update"
@@ -98,7 +102,7 @@ fi
 header "\u2620 Rootkit" 6
 sleep 3
 echo ""
-if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | rg -v rg | rg -i INFECTED; then
+if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | rg -v rg | rg INFECTED; then
     echo "${error}""💀💀💀💀💀💀💀💀💀💀 We MIGHT have had a problem!""${reset}"
     echo "${error}""Now is a good time to check ~/.chkrootkit.log!""${reset}"
 else
