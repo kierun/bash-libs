@@ -69,8 +69,8 @@ elif test -e /etc/debian_version; then
 fi
 
 # Rust then Cargo.
-header "\ue7a8 Rust update" 6
 if command -v rustup &> /dev/null; then
+    header "\ue7a8 Rust update" 6
     rustup update
 fi
 header "\ue7a8 Cargo update" 6
