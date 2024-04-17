@@ -77,6 +77,7 @@ header "\ue7a8 Cargo update" 6
 echo ""
 echo "You need to run: cargo install cargo-update"
 cargo install-update -a
+cargo cache --autoclean  # https://github.com/matthiaskrgr/cargo-cache
 
 # ClamAV
 header "\ue214 ClamAV update" 6
