@@ -82,10 +82,16 @@ cargo cache --autoclean  # https://github.com/matthiaskrgr/cargo-cache
 # ClamAV
 header "\ue214 ClamAV update" 6
 echo ""
+if [[ $(lsb_release -is) == "Ubuntu" ]]; then
+    sudo /etc/init.d/clamav-freshclam stop
+fi
 if ! sudo /usr/bin/freshclam; then
     echo "${error}""💀 clamAV not updated.""${reset}"
 else
     echo "${success}""clamAV updated.""${reset}"
+fi
+if [[ $(lsb_release -is) == "Ubuntu" ]]; then
+    sudo /etc/init.d/clamav-freshclam start
 fi
 
 # Golang.
