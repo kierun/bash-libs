@@ -55,7 +55,7 @@ if [[ $(lsb_release -is) == "Ubuntu" ]]; then
     header "\uebc9  Ubuntu" 6
 
     echo -e "\n""${info}""APT update and upgrade""${reset}"
-    sudo apt update | colout "$REGEXP" "$COLOR" && sudo apt upgrade | colout "$REGEXP" "$COLOR"
+    sudo apt-get update | colout "$REGEXP" "$COLOR" && sudo apt-get upgrade | colout "$REGEXP" "$COLOR"
 fi
 
 # This is for everything!
