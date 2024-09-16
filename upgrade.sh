@@ -10,9 +10,8 @@ info=$(tput setaf 99)   # purple.
 header=$(tput setaf 69) # light blue.
 # debug=$(tput setaf 240) # grey.
 reset=$(tput sgr0)
-REGEXP=".*"  # Everything by default.
-COLOR="#444444"  # This grey works for me.
-
+REGEXP=".*"     # Everything by default.
+COLOR="#444444" # This grey works for me.
 
 header() {
     offset=$2
@@ -31,8 +30,8 @@ header() {
 
 # Check that https://github.com/BurntSushi/ripgrep is installed.
 if ! [ -x "$(command -v rg)" ]; then
-  echo 'Error: RipGrep is not installed. Please install it.' >&2
-  exit 1
+    echo 'Error: RipGrep is not installed. Please install it.' >&2
+    exit 1
 fi
 
 # This is only for Fedora.
@@ -40,7 +39,7 @@ if [[ $(lsb_release -is) == "Fedora" ]]; then
     header "\uf30a  Fedora" 6
 
     echo -e "\n""${info}""DNF update""${reset}"
-    if command -v dnf5 &> /dev/null; then
+    if command -v dnf5 &>/dev/null; then
         # sudo dnf5 up | colout "$REGEXP" "$COLOR"
         sudo dnf5 up
     else
@@ -62,6 +61,22 @@ if [[ $(lsb_release -is) == "Ubuntu" ]]; then
     sudo apt update && sudo apt upgrade
 fi
 
+# SPAM!
+if [[ $(lsb_release -is) == "Ubuntu" ]]; then
+    header "\ue7a8  SPAM update" 6
+    last_date=$(date +%Y-%m-%d -d '7 day ago')
+    echo "${info}Learning HAM from last ${last_date} days${reset}"
+    # This command works as it is. Word splitting is not happening.
+    # shellcheck disable=SC2046
+    sudo sa-learn --ham --showdots $(find "$HOME"/Maildir/.[a-z]*/cur/* -newermt "${last_date}" -type f -print) | colout "$REGEXP" "$COLOR"
+    echo "${info}Learning SPAM${reset}"
+    sudo sa-learn --spam --showdots "$HOME"/Maildir/.Spam/cur/* | colout "$REGEXP" "$COLOR"
+    echo "${info}Running spamassassin update, restating iff it is necessary.${reset}"
+    sudo sa-update -v && sudo service spamassassin restart
+    echo "${info}Removing spam old than 28 days.${reset}"
+    find "${HOME}"/Maildir/.Spam/cur/* -mtime +28 -print -type f -delete | wc -l | colout "$REGEXP" "$COLOR"
+fi
+
 # This is for everything!
 
 # pipx for Python.
@@ -76,7 +91,7 @@ elif test -e /etc/debian_version; then
 fi
 
 # Rust then Cargo.
-if command -v rustup &> /dev/null; then
+if command -v rustup &>/dev/null; then
     header "\ue7a8 Rust update" 6
     rustup update | colout "$REGEXP" "$COLOR"
 fi
@@ -86,7 +101,7 @@ if ! cargo install-update -a | colout "$REGEXP" "$COLOR"; then
     # https://github.com/matthiaskrgr/cargo-cache
     echo "${error}""You need to run: cargo install cargo-update""${reset}"
 else
-    cargo cache --autoclean  | colout "$REGEXP" "$COLOR"
+    cargo cache --autoclean | colout "$REGEXP" "$COLOR"
 fi
 
 # ClamAV
@@ -95,7 +110,7 @@ echo ""
 if [[ $(lsb_release -is) == "Ubuntu" ]]; then
     sudo /etc/init.d/clamav-freshclam stop | colout "$REGEXP" "$COLOR"
 fi
-if ! sudo /usr/bin/freshclam | colout "$REGEXP" "$COLOR" ; then
+if ! sudo /usr/bin/freshclam | colout "$REGEXP" "$COLOR"; then
     echo "${error}""💀 clamAV not updated.""${reset}"
 else
     echo "${success}""clamAV updated.""${reset}"
@@ -107,7 +122,7 @@ fi
 # Golang.
 header "\ue724 Golang update" 6
 echo ""
-if command -v go-global-update &> /dev/null; then
+if command -v go-global-update &>/dev/null; then
     if go-global-update | colout "$REGEXP" "$COLOR"; then
         echo "${success}""Golang things were updated.""${reset}"
     fi
