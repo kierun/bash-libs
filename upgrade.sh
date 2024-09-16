@@ -41,13 +41,16 @@ if [[ $(lsb_release -is) == "Fedora" ]]; then
 
     echo -e "\n""${info}""DNF update""${reset}"
     if command -v dnf5 &> /dev/null; then
-        sudo dnf5 up | colout "$REGEXP" "$COLOR"
+        # sudo dnf5 up | colout "$REGEXP" "$COLOR"
+        sudo dnf5 up
     else
-        sudo dnf up | colout "$REGEXP" "$COLOR"
+        # sudo dnf up | colout "$REGEXP" "$COLOR"
+        sudo dnf up
     fi
 
     echo -e "\n""${info}""Fltapak""${reset}"
-    sudo flatpak update | colout "$REGEXP" "$COLOR"
+    # sudo flatpak update | colout "$REGEXP" "$COLOR"
+    sudo flatpak update
 fi
 
 # This is only for Ubuntu.
@@ -55,7 +58,8 @@ if [[ $(lsb_release -is) == "Ubuntu" ]]; then
     header "\uebc9  Ubuntu" 6
 
     echo -e "\n""${info}""APT update and upgrade""${reset}"
-    sudo apt update | colout "$REGEXP" "$COLOR" && sudo apt upgrade | colout "$REGEXP" "$COLOR"
+    # sudo apt update | colout "$REGEXP" "$COLOR" && sudo apt upgrade | colout "$REGEXP" "$COLOR"
+    sudo apt update && sudo apt upgrade
 fi
 
 # This is for everything!
