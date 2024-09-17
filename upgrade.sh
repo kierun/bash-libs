@@ -83,12 +83,7 @@ fi
 header "\ue73c Pipx update" 6
 echo ""
 pipx upgrade-all 2>&1 | colout "$REGEXP" "$COLOR"
-if test -e /etc/fedora-release; then
-    pipx list --short | colout "$REGEXP" "$COLOR"
-elif test -e /etc/debian_version; then
-    # Old software sucks…
-    pipx list | colout "$REGEXP" "$COLOR"
-fi
+pipx list --short | colout "$REGEXP" "$COLOR"
 
 # Rust then Cargo.
 if command -v rustup &>/dev/null; then
