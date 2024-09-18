@@ -124,14 +124,14 @@ if command -v go-global-update &>/dev/null; then
 else
     echo "${error}""💀 go-global-update not found: go install github.com/Gelio/go-global-update@latest""${reset}"
 fi
-
-# Root kits?
-header "\u2620 Rootkit" 6
-sleep 3
-echo ""
-if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | rg -v rg | rg INFECTED; then
-    echo "${error}""💀💀💀💀💀💀💀💀💀💀 We MIGHT have had a problem!""${reset}"
-    echo "${error}""Now is a good time to check ~/.chkrootkit.log!""${reset}"
-else
-    echo "${success}""Chkrootkit has not found any rootkits. Good.""${reset}"
-fi
+#
+# # Root kits?
+# header "\u2620 Rootkit" 6
+# sleep 3
+# echo ""
+# if sudo /usr/bin/chkrootkit 2>&1 | tee ~/.chkrootkit.log | rg -v rg | rg INFECTED; then
+#     echo "${error}""💀💀💀💀💀💀💀💀💀💀 We MIGHT have had a problem!""${reset}"
+#     echo "${error}""Now is a good time to check ~/.chkrootkit.log!""${reset}"
+# else
+#     echo "${success}""Chkrootkit has not found any rootkits. Good.""${reset}"
+# fi
