@@ -72,7 +72,7 @@ if [[ $(lsb_release -is) == "Ubuntu" ]]; then
     echo "${info}Learning SPAM${reset}"
     sudo sa-learn --spam --showdots "$HOME"/Maildir/.Spam/cur/* | colout "$REGEXP" "$COLOR"
     echo "${info}Running spamassassin update, restating iff it is necessary.${reset}"
-    sudo sa-update -v && sudo service spamassassin restart
+    sudo sa-update -v && sudo service spamd restart
     echo "${info}Removing spam old than 28 days.${reset}"
     find "${HOME}"/Maildir/.Spam/cur/* -mtime +28 -print -type f -delete | wc -l | colout "$REGEXP" "$COLOR"
 fi
