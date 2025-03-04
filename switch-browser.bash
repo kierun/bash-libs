@@ -1,11 +1,12 @@
 #!/bin/bash
 
-while getopts "h?cf" opt; do
+while getopts "h?cfl" opt; do
     case "$opt" in
     h | \?)
         echo "Usage: $0 [-c] [-f] [-h]"
         echo "-c for Chrome"
         echo "-f for Firefox"
+        echo "-l for LibreWolf"
         echo "-h for help"
         exit 0
         ;;
@@ -18,6 +19,11 @@ while getopts "h?cf" opt; do
         echo "Switching to Firefox!"
         xdg-mime default firefox.desktop 'x-scheme-handler/http'
         xdg-mime default firefox.desktop 'x-scheme-handler/https'
+        ;;
+    l)
+        echo "Switching to LibreWolf!"
+        xdg-mime default librewolf.desktop 'x-scheme-handler/http'
+        xdg-mime default librewolf.desktop 'x-scheme-handler/https'
         ;;
     esac
 done
