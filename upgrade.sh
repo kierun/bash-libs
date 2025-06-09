@@ -124,6 +124,20 @@ if command -v go-global-update &>/dev/null; then
 else
     echo "${error}""💀 go-global-update not found: go install github.com/Gelio/go-global-update@latest""${reset}"
 fi
+
+# NPM.
+if command -v npm &>/dev/null; then
+    header "\ue7a8 NPM update" 6
+    echo ""
+    npm -g list
+    if ! npm update -g | colout "$REGEXP" "$COLOR"; then
+        echo "${error}""💀 NPM not updated.""${reset}"
+    else
+        echo "${success}""NPM updated.""${reset}"
+    fi
+    npm -g list
+fi
+
 #
 # # Root kits?
 # header "\u2620 Rootkit" 6
