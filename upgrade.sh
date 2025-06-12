@@ -105,7 +105,7 @@ echo ""
 if [[ $(lsb_release -is) == "Ubuntu" ]]; then
     sudo /etc/init.d/clamav-freshclam stop | colout "$REGEXP" "$COLOR"
 fi
-if ! sudo /usr/bin/freshclam | colout "$REGEXP" "$COLOR"; then
+if ! sudo /usr/bin/freshclam | colout "$Rdiff  <(echo "$string1" ) <(echo "$string2")EGEXP" "$COLOR"; then
     echo "${error}""💀 clamAV not updated.""${reset}"
 else
     echo "${success}""clamAV updated.""${reset}"
@@ -129,13 +129,15 @@ fi
 if command -v npm &>/dev/null; then
     header "\ue7a8 NPM update" 6
     echo ""
-    npm -g list
+    before=$(npm -g list)
     if ! npm update -g | colout "$REGEXP" "$COLOR"; then
         echo "${error}""💀 NPM not updated.""${reset}"
     else
         echo "${success}""NPM updated.""${reset}"
     fi
-    npm -g list
+    after=$(npm -g list)
+    echo "Before → After"
+    difft  <(echo "$before" ) <(echo "$after")
 fi
 
 #
