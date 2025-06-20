@@ -138,6 +138,13 @@ if command -v npm &>/dev/null; then
     after=$(npm -g list)
     echo "Before → After"
     difft  <(echo "$before" ) <(echo "$after")
+    echo "Debugging:"
+    echo "diff"
+    diff  <(echo "$before" ) <(echo "$after")
+    echo "$before"
+    echo "------"
+    echo "$after"
+    echo "------"
 fi
 
 #
