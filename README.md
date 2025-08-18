@@ -1,5 +1,15 @@
 # bash libs
 
+> [!CAUTION]
+> 
+> [This repository has moved to codeberg](https://codeberg.org/kierun/bash-libs)
+>
+> No further development will happen here.
+>
+> Please migrate ASAP.
+
+-----
+
 [![Typing SVG](https://readme-typing-svg.demolab.com/?lines=Really+useful⸮+bash+scripts)](https://git.io/typing-svg)
 
 - Some of which you can source into your own script to make your script more nifty. 
